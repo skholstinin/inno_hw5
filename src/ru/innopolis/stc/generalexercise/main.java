@@ -1,4 +1,4 @@
-package ru.innopolis.stc;
+package ru.innopolis.stc.generalexercise;
 
 import java.io.*;
 import java.util.ArrayList;
