@@ -7,6 +7,8 @@ public class main {
         final String FILE_PATH = "bufperson.txt";
 
         ArrayList<BufEmployee> personList = new ArrayList<>();
+        ArrayList<BufEmployee> personListRead = null;
+
         personList.add(new BufEmployee("Tom", 31, 1345.23, "Programmer"));
         personList.add(new BufEmployee("Bill", 33, 2345.23, "Tester"));
         personList.add(new BufEmployee("Jack", 38, 4345.23, "Engineer"));
@@ -21,7 +23,10 @@ public class main {
         BufEmployee bufEmployee = new BufEmployee();
         bufEmployee.writeData(personList, FILE_PATH);
 
-        System.out.println(bufEmployee.readData(FILE_PATH));
+        personListRead = bufEmployee.readData(FILE_PATH);
 
+        for (BufEmployee e : personListRead) {
+            System.out.println(e.toString());
+        }
     }
 }

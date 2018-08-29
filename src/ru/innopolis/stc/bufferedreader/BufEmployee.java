@@ -51,32 +51,53 @@ public class BufEmployee {
         this.job = job;
     }
 
+    @Override
+    public String toString() {
+        return "BufEmployee{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", salary=" + salary +
+                ", job='" + job + '\'' +
+                '}';
+    }
 
     public ArrayList<BufEmployee> readData(String fileName) {
         ArrayList<BufEmployee> readPersonList = new ArrayList<>();
-        ;
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+
+        try (BufferedReader bufReader = new BufferedReader(new FileReader(fileName))) {
 
             int cntByte;
-            int temp;
             int cntPerson = 0;
             int firstLength;
-            while ((firstLength = br.read()) != -1) {
+            String tempgname = "";
+            String tempjob = "";
+            double tempsalary = 0;
+            while ((firstLength = bufReader.read()) != -1) {
+                char name[] = new char[firstLength];
+
                 readPersonList.add(new BufEmployee("", 0, 0.0, ""));
                 for (cntByte = 0; cntByte < firstLength; cntByte++) {
-                    readPersonList.toArray()[cntByte] = br.read();//Name
+                    name[cntByte] = (char) bufReader.read();
+                    tempgname += (String) Character.toString(name[cntByte]);
                 }
-                readPersonList.get(cntPerson).setName(name);
-                readPersonList.toArray()[cntByte] = br.read();//Age
+                readPersonList.get(cntPerson).setName(tempgname);
+                readPersonList.get(cntPerson).setAge(bufReader.read());
 
                 for (int i = 0; i < 8; i++) {
-                    readPersonList.toArray()[cntByte + i] = br.read();//Salary
+                    tempsalary = bufReader.read();//Salary
+
                 }
 
-                int cntByteJob = br.read();
+                int cntByteJob = bufReader.read();
+                char job[] = new char[cntByteJob];
                 for (int i = 0; i < cntByteJob; i++) {
-                    readPersonList.toArray()[cntByte] = br.read();//Job
+                    job[i] = (char) bufReader.read();//Job
+                    tempjob += (String) Character.toString(job[i]);
                 }
+                readPersonList.get(cntPerson).setJob(tempjob);
+                tempgname = "";
+                tempjob = "";
+                cntPerson++;
             }
 
         } catch (IOException e) {
@@ -86,22 +107,22 @@ public class BufEmployee {
     }
 
     public void writeData(ArrayList<BufEmployee> listEmployee, String fileName) {
-        try (BufferedWriter br = new BufferedWriter(new FileWriter(fileName))) {
+        try (BufferedWriter bufWriter = new BufferedWriter(new FileWriter(fileName))) {
 
             for (int i = 0; i < listEmployee.size(); i++) {
-                br.write(listEmployee.get(i).getName().getBytes().length);
-                br.write(listEmployee.get(i).getName());
-                br.write(listEmployee.get(i).getAge());
-                br.write((int) (listEmployee.get(i).getSalary()) >> 56);
-                br.write((int) (listEmployee.get(i).getSalary()) >> 48);
-                br.write((int) (listEmployee.get(i).getSalary()) >> 40);
-                br.write((int) (listEmployee.get(i).getSalary()) >> 32);
-                br.write((int) (listEmployee.get(i).getSalary()) >> 24);
-                br.write((int) (listEmployee.get(i).getSalary()) >> 16);
-                br.write((int) (listEmployee.get(i).getSalary()) >> 8);
-                br.write((int) (listEmployee.get(i).getSalary()));
-                br.write(listEmployee.get(i).getJob().getBytes().length);
-                br.write(listEmployee.get(i).getJob());
+                bufWriter.write(listEmployee.get(i).getName().getBytes().length);
+                bufWriter.write(listEmployee.get(i).getName());
+                bufWriter.write(listEmployee.get(i).getAge());
+                bufWriter.write((int) (listEmployee.get(i).getSalary()) >> 56);
+                bufWriter.write((int) (listEmployee.get(i).getSalary()) >> 48);
+                bufWriter.write((int) (listEmployee.get(i).getSalary()) >> 40);
+                bufWriter.write((int) (listEmployee.get(i).getSalary()) >> 32);
+                bufWriter.write((int) (listEmployee.get(i).getSalary()) >> 24);
+                bufWriter.write((int) (listEmployee.get(i).getSalary()) >> 16);
+                bufWriter.write((int) (listEmployee.get(i).getSalary()) >> 8);
+                bufWriter.write((int) (listEmployee.get(i).getSalary()));
+                bufWriter.write(listEmployee.get(i).getJob().getBytes().length);
+                bufWriter.write(listEmployee.get(i).getJob());
             }
         } catch (IOException ex) {
             ex.printStackTrace();
